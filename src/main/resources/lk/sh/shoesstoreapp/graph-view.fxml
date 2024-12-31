@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="693.0" prefWidth="905.0" style="-fx-background-color: #c2c4c3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.sh.shoesstoreapp.controller.GraphController">
+   <children>
+      <BarChart fx:id="barChart" layoutX="251.0" layoutY="127.0" prefHeight="510.0" prefWidth="619.0">
+         <xAxis>
+            <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+         </xAxis>
+         <yAxis>
+            <NumberAxis fx:id="yAxis" side="LEFT" />
+         </yAxis>
+      </BarChart>
+      <AnchorPane layoutY="-5.0" prefHeight="713.0" prefWidth="222.0" style="-fx-background-color: #383735;">
+         <children>
+            <Button layoutX="38.0" layoutY="251.0" mnemonicParsing="false" onAction="#manage" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: gray;" text="Manage Shoe Items" textFill="#effaef">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="38.0" layoutY="350.0" mnemonicParsing="false" onAction="#display" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: Gray;" text="Available Shoe Items" textFill="#edf2ed">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <Button layoutX="38.0" layoutY="454.0" mnemonicParsing="false" onAction="#order" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: gray;" text="Order Shoe Items" textFill="#edf2ed">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <AnchorPane layoutX="31.0" layoutY="39.0" prefHeight="82.0" prefWidth="154.0" style="-fx-background-color: black;">
+               <children>
+                  <ImageView fitHeight="82.0" fitWidth="163.0" layoutX="3.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@logo1.png" />
+                     </image>
+                  </ImageView>
+                  <Hyperlink layoutX="1.0" layoutY="-4.0" onAction="#toHome" prefHeight="72.0" prefWidth="166.0">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Hyperlink>
+               </children>
+            </AnchorPane>
+            <Button layoutX="38.0" layoutY="550.0" mnemonicParsing="false" onAction="#graph" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: gray;" text="Report Graph" textFill="#edf2ed">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <Label layoutX="421.0" layoutY="50.0" text="Stock Analysis by Brand">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
