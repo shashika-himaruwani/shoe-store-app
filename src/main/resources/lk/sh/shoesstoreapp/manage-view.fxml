@@ -3,6 +3,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,92 +13,68 @@
 
 <AnchorPane prefHeight="677.0" prefWidth="923.0" style="-fx-background-color: White;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.sh.shoesstoreapp.controller.ManageController">
     <children>
-        <Label layoutX="424.0" layoutY="36.0" text="Manage Shoe Items " textFill="#333130">
+        <Label layoutX="431.0" layoutY="8.0" text="Manage Shoe Items " textFill="#333130">
             <font>
                 <Font name="System Bold" size="30.0" />
             </font>
         </Label>
-        <TextField fx:id="txtId" layoutX="357.0" layoutY="142.0" onAction="#search" prefHeight="50.0" prefWidth="274.0" promptText="Enter Shoe ID" style="-fx-background-color: #e8ebed;">
+        <TextField fx:id="txtId" layoutX="353.0" layoutY="94.0" onAction="#search" prefHeight="22.0" prefWidth="194.0" promptText="Enter Shoe ID" style="-fx-background-color: #e8ebed;" />
+        <TextField fx:id="txtBrand" layoutX="353.0" layoutY="148.0" prefHeight="31.0" prefWidth="194.0" promptText="Brand" style="-fx-background-color: #e8ebed;" />
+        <TextField fx:id="txtGender" layoutX="353.0" layoutY="202.0" prefHeight="31.0" prefWidth="194.0" promptText="Gender" style="-fx-background-color: #e8ebed;" />
+        <TextField fx:id="txtSize" layoutX="669.0" layoutY="94.0" prefHeight="31.0" prefWidth="194.0" promptText="Size" style="-fx-background-color: #e8ebed;" />
+        <TextField fx:id="stock_qty" layoutX="669.0" layoutY="148.0" prefHeight="31.0" prefWidth="194.0" promptText="Stock Quantity" style="-fx-background-color: #e8ebed;" />
+        <TextField fx:id="price" layoutX="669.0" layoutY="202.0" prefHeight="31.0" prefWidth="194.0" promptText="Price" style="-fx-background-color: #e8ebed;" />
+        <Button layoutX="280.0" layoutY="261.0" mnemonicParsing="false" onAction="#add" prefHeight="31.0" prefWidth="102.0" style="-fx-background-color: #0c73b3;" text="Add Shoe" textFill="#fafafa">
             <font>
-                <Font size="15.0" />
-            </font>
-        </TextField>
-        <TextField fx:id="txtBrand" layoutX="357.0" layoutY="221.0" prefHeight="50.0" prefWidth="274.0" promptText="Brand" style="-fx-background-color: #e8ebed;">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </TextField>
-        <TextField fx:id="txtGender" layoutX="350.0" layoutY="307.0" prefHeight="50.0" prefWidth="286.0" promptText="Gender" style="-fx-background-color: #e8ebed;">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </TextField>
-        <TextField fx:id="txtSize" layoutX="350.0" layoutY="389.0" prefHeight="50.0" prefWidth="286.0" promptText="Size" style="-fx-background-color: #e8ebed;">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </TextField>
-        <TextField fx:id="stock_qty" layoutX="350.0" layoutY="480.0" prefHeight="50.0" prefWidth="286.0" promptText="Stock Quantity" style="-fx-background-color: #e8ebed;">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </TextField>
-        <TextField fx:id="price" layoutX="350.0" layoutY="568.0" prefHeight="50.0" prefWidth="286.0" promptText="Price" style="-fx-background-color: #e8ebed;">
-            <font>
-                <Font size="15.0" />
-            </font>
-        </TextField>
-        <Button layoutX="731.0" layoutY="216.0" mnemonicParsing="false" onAction="#add" prefHeight="38.0" prefWidth="154.0" style="-fx-background-color: #0c73b3;" text="Add Shoe" textFill="#fafafa">
-            <font>
-                <Font name="System Bold" size="16.0" />
+                <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button layoutX="731.0" layoutY="293.0" mnemonicParsing="false" onAction="#update" prefHeight="38.0" prefWidth="154.0" style="-fx-background-color: #0cb362;" text="Update" textFill="#fafafa">
+        <Button layoutX="450.0" layoutY="261.0" mnemonicParsing="false" onAction="#update" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: #0cb362;" text="Update" textFill="#fafafa">
             <font>
-                <Font name="System Bold" size="16.0" />
+                <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button layoutX="730.0" layoutY="370.0" mnemonicParsing="false" onAction="#delete" prefHeight="38.0" prefWidth="154.0" style="-fx-background-color: #db3425;" text="Delete" textFill="#fafafa">
+        <Button layoutX="605.0" layoutY="261.0" mnemonicParsing="false" onAction="#delete" prefHeight="31.0" prefWidth="102.0" style="-fx-background-color: #db3425;" text="Delete" textFill="#fafafa">
             <font>
-                <Font name="System Bold" size="16.0" />
+                <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button layoutX="731.0" layoutY="441.0" mnemonicParsing="false" onAction="#showAll" prefHeight="38.0" prefWidth="154.0" style="-fx-background-color: #80507a;" text="Show All" textFill="#fafafa">
+        <Button layoutX="772.0" layoutY="261.0" mnemonicParsing="false" onAction="#showAll" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: #80507a;" text="Show All" textFill="#fafafa">
             <font>
-                <Font name="System Bold" size="16.0" />
+                <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Button layoutX="730.0" layoutY="516.0" mnemonicParsing="false" onAction="#exit" prefHeight="38.0" prefWidth="154.0" style="-fx-background-color: black;" text="Exit" textFill="#fafafa">
+        <Button layoutX="818.0" layoutY="646.0" mnemonicParsing="false" onAction="#exit" prefHeight="31.0" prefWidth="90.0" style="-fx-background-color: black;" text="Exit" textFill="#fafafa">
             <font>
-                <Font name="System Bold" size="16.0" />
+                <Font name="System Bold" size="12.0" />
             </font>
         </Button>
-        <Label layoutX="283.0" layoutY="156.0" prefHeight="22.0" prefWidth="74.0" text="Shoe ID : ">
+        <Label layoutX="273.0" layoutY="98.0" prefHeight="22.0" prefWidth="74.0" text="Shoe ID : ">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <Label layoutX="283.0" layoutY="235.0" prefHeight="22.0" prefWidth="74.0" text="Brand :">
+        <Label layoutX="273.0" layoutY="152.0" prefHeight="22.0" prefWidth="74.0" text="Brand :">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <Label layoutX="289.0" layoutY="403.0" prefHeight="22.0" prefWidth="74.0" text="Size :">
+        <Label layoutX="616.0" layoutY="98.0" prefHeight="22.0" prefWidth="74.0" text="Size :">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <Label layoutX="289.0" layoutY="494.0" prefHeight="22.0" prefWidth="74.0" text="Stock : ">
+        <Label layoutX="616.0" layoutY="152.0" prefHeight="22.0" prefWidth="74.0" text="Stock : ">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-        <Label layoutX="289.0" layoutY="582.0" prefHeight="22.0" prefWidth="74.0" text="Price : ">
+        <Label layoutX="616.0" layoutY="206.0" prefHeight="22.0" prefWidth="74.0" text="Price : ">
             <font>
                 <Font size="15.0" />
             </font>
         </Label>
-      <Label layoutX="283.0" layoutY="321.0" prefHeight="22.0" prefWidth="74.0" text="Gender : ">
+      <Label layoutX="273.0" layoutY="206.0" prefHeight="22.0" prefWidth="74.0" text="Gender : ">
          <font>
             <Font size="15.0" />
          </font>
@@ -137,6 +115,21 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="273.0" layoutY="330.0" prefHeight="279.0" prefWidth="626.0">
+         <children>
+            <TableView fx:id="tblShoes" layoutY="19.0" prefHeight="270.0" prefWidth="626.0">
+               <columns>
+                  <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+                  <TableColumn fx:id="colBrand" prefWidth="88.79998779296875" text="Brand" />
+                  <TableColumn fx:id="colGender" prefWidth="89.60003662109375" text="Gender" />
+                  <TableColumn fx:id="colSize" prefWidth="76.79998779296875" text="Size" />
+                  <TableColumn fx:id="colStockQty" prefWidth="80.800048828125" text="Stock QTY" />
+                  <TableColumn fx:id="colPrice" prefWidth="106.4000244140625" text="Price" />
+                  <TableColumn fx:id="colDelete" prefWidth="320.79998779296875" />
+               </columns>
+            </TableView>
          </children>
       </AnchorPane>
     </children>

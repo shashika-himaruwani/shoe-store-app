@@ -27,7 +27,7 @@ public class RegisterController {
     private TextField txtUsername;
 
     // Database connection details
-    private final String URL = "jdbc:mysql://localhost:3306/shoe_store";
+    private final String URL = "jdbc:mysql://localhost:3306/shoestore";
     private final String USER = "root";
     private final String PASSWORD = "2001"; // Replace with your MySQL password
 

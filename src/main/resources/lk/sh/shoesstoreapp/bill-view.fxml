@@ -3,34 +3,41 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="672.0" prefWidth="933.0" style="-fx-background-color: #bfbdbd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.sh.shoesstoreapp.controller.BillController">
    <children>
-      <TableView fx:id="tblBill" layoutX="287.0" layoutY="171.0" prefHeight="327.0" prefWidth="610.0">
-         <columns>
-            <TableColumn fx:id="colDate" prefWidth="150.0" style="-fx-background-color: #bcc5f7;" text="Date" />
-            <TableColumn fx:id="colItemId" prefWidth="72.800048828125" text="Item ID" />
-            <TableColumn fx:id="colQuantity" prefWidth="88.7999267578125" text="Quantity" />
-            <TableColumn fx:id="colPrice" prefWidth="130.4000244140625" text="Price" />
-            <TableColumn fx:id="colSubtotal" prefWidth="212.0" text="Subtotal" />
-         </columns>
-      </TableView>
-      <Button layoutX="778.0" layoutY="569.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #f50a31;" text="Go Back" textFill="#efdede">
-         <font>
-            <Font name="System Bold" size="14.0" />
-         </font></Button>
-      <Label layoutX="511.0" layoutY="52.0" prefHeight="40.0" prefWidth="190.0" text="Bill Summary">
-         <font>
-            <Font name="System Bold" size="28.0" />
-         </font>
-      </Label>
-      <AnchorPane prefHeight="700.0" prefWidth="230.0" style="-fx-background-color: #383735;">
+      <AnchorPane layoutX="230.0" layoutY="0.0" prefHeight="672.0" prefWidth="703.0" style="-fx-background-color: white;">
+         <children>
+            <ScrollPane layoutX="20.0" layoutY="20.0" prefHeight="572.0" prefWidth="663.0">
+               <content>
+                  <VBox fx:id="billContainer" spacing="10" style="-fx-padding: 20;">
+                     <children>
+                        <Label fx:id="lblBillNo" style="-fx-font-size: 14px;" />
+                        <Label fx:id="lblDate" style="-fx-font-size: 14px;" />
+                        <Label fx:id="lblSubTotal" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <Button layoutX="20.0" layoutY="610.0" mnemonicParsing="false" onAction="#downloadPDF" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #4CAF50;" text="Download Bill (PDF)" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="563.0" layoutY="610.0" mnemonicParsing="false" onAction="#goBack" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: #f50a31;" text="Go Back" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="699.0" prefWidth="230.0" style="-fx-background-color: #383735;">
          <children>
             <Button layoutX="38.0" layoutY="251.0" mnemonicParsing="false" onAction="#manage" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: gray;" text="Manage Shoe Items" textFill="#effaef">
                <font>
