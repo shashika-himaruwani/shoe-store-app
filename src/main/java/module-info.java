@@ -3,6 +3,7 @@ module lk.sh.shoesstoreapp {
     requires javafx.fxml;
     requires java.sql;
     requires itextpdf;
+    requires org.apache.poi.ooxml;
 
     opens lk.sh.shoesstoreapp to javafx.fxml;
     opens lk.sh.shoesstoreapp.tm to javafx.base;

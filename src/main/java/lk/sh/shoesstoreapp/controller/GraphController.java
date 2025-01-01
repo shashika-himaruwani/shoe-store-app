@@ -1,5 +1,6 @@
 package lk.sh.shoesstoreapp.controller;
 
+import com.itextpdf.text.Font;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,17 +12,19 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lk.sh.shoesstoreapp.db.DBConnection;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.*;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -37,34 +40,65 @@ public class GraphController implements Initializable {
     private NumberAxis yAxis;
 
     @FXML
-    private Button btnExportReport;
+    private DatePicker startDatePicker;
+
+    @FXML
+    private DatePicker endDatePicker;
+
+    @FXML
+    private Button btnExportExcel;
+
+    @FXML
+    private Button btnExportPDF;
+
+    @FXML
+    private Button btnRefresh;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setupChart();
-        loadChartData();
+        setupDatePickers();
+        setupButtons();
     }
 
     private void setupChart() {
-
         xAxis.setLabel("Brand");
         yAxis.setLabel("Quantity");
+        barChart.setTitle("");
+    }
+
+    private void setupDatePickers() {
+        // Set default values
+        startDatePicker.setValue(LocalDate.now().minusMonths(1));
+        endDatePicker.setValue(LocalDate.now());
+
+        // Add listeners for date changes
+        startDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> refreshChart());
+        endDatePicker.valueProperty().addListener((obs, oldVal, newVal) -> refreshChart());
+    }
+
+    private void setupButtons() {
+        btnRefresh.setOnAction(e -> refreshChart());
+        btnExportExcel.setOnAction(this::exportToExcel);
+        btnExportPDF.setOnAction(this::exportToPDF);
+    }
+
+    private void refreshChart() {
+        barChart.getData().clear();
+        loadChartData();
     }
 
     private void loadChartData() {
         try {
-            // Create series for available and ordered stock
             XYChart.Series<String, Number> availableSeries = new XYChart.Series<>();
             availableSeries.setName("Available Stock");
 
             XYChart.Series<String, Number> orderedSeries = new XYChart.Series<>();
             orderedSeries.setName("Ordered Quantity");
 
-            // Get available stock by brand
             Map<String, Integer> availableStock = getAvailableStockByBrand();
             Map<String, Integer> orderedStock = getOrderedStockByBrand();
 
-            // Add data to series
             for (String brand : availableStock.keySet()) {
                 availableSeries.getData().add(new XYChart.Data<>(brand, availableStock.get(brand)));
                 orderedSeries.getData().add(new XYChart.Data<>(brand, orderedStock.getOrDefault(brand, 0)));
@@ -73,8 +107,8 @@ public class GraphController implements Initializable {
             barChart.getData().addAll(availableSeries, orderedSeries);
 
         } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Data Error", "Failed to load chart data");
+            e.printStackTrace();
         }
     }
 
@@ -100,11 +134,14 @@ public class GraphController implements Initializable {
             FROM order_details od
             JOIN shoes s ON od.sid = s.id
             JOIN orders o ON od.oid = o.id
-            WHERE o.order_date >= DATE_SUB(CURRENT_DATE, INTERVAL 1 YEAR)
+            WHERE o.order_date BETWEEN ? AND ?
             GROUP BY s.brand
         """;
 
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setDate(1, java.sql.Date.valueOf(startDatePicker.getValue()));
+            stmt.setDate(2, java.sql.Date.valueOf(endDatePicker.getValue()));
+
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 orderedMap.put(rs.getString("brand"), rs.getInt("total_ordered"));
@@ -113,22 +150,100 @@ public class GraphController implements Initializable {
         return orderedMap;
     }
 
-//    @FXML
-//    private void exportReport(ActionEvent event) {
-//        // Add report generation logic here
-//        try {
-//            generatePDFReport();
-//            showAlert(Alert.AlertType.INFORMATION, "Success", "Report generated successfully!");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            showAlert(Alert.AlertType.ERROR, "Error", "Failed to generate report");
-//        }
-//    }
-//
-//    private void generatePDFReport() {
-//        // Implement PDF generation logic here
-//        // You can use libraries like iText or Apache PDFBox
-//    }
+    @FXML
+    private void exportToExcel(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Excel File");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("Excel Files", "*.xlsx")
+            );
+            File file = fileChooser.showSaveDialog(barChart.getScene().getWindow());
+
+            if (file != null) {
+                Workbook workbook = new XSSFWorkbook();
+                Sheet sheet = workbook.createSheet("Stock Report");
+
+                // Create headers
+                Row headerRow = sheet.createRow(0);
+                headerRow.createCell(0).setCellValue("Brand");
+                headerRow.createCell(1).setCellValue("Available Stock");
+                headerRow.createCell(2).setCellValue("Ordered Quantity");
+
+                // Add data
+                Map<String, Integer> availableStock = getAvailableStockByBrand();
+                Map<String, Integer> orderedStock = getOrderedStockByBrand();
+
+                int rowNum = 1;
+                for (String brand : availableStock.keySet()) {
+                    Row row = sheet.createRow(rowNum++);
+                    row.createCell(0).setCellValue(brand);
+                    row.createCell(1).setCellValue(availableStock.get(brand));
+                    row.createCell(2).setCellValue(orderedStock.getOrDefault(brand, 0));
+                }
+
+                // Write to file
+                try (FileOutputStream fileOut = new FileOutputStream(file)) {
+                    workbook.write(fileOut);
+                }
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Excel file exported successfully!");
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Export Error", "Failed to export Excel file");
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void exportToPDF(ActionEvent event) {
+        try {
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save PDF File");
+            fileChooser.getExtensionFilters().add(
+                    new FileChooser.ExtensionFilter("PDF Files", "*.pdf")
+            );
+            File file = fileChooser.showSaveDialog(barChart.getScene().getWindow());
+
+            if (file != null) {
+                Document document = new Document();
+                PdfWriter.getInstance(document, new FileOutputStream(file));
+                document.open();
+
+                // Add title
+                Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
+                Paragraph title = new Paragraph("Stock Report", titleFont);
+                title.setAlignment(Element.ALIGN_CENTER);
+                document.add(title);
+                document.add(new Paragraph("\n"));
+
+                // Create table
+                PdfPTable table = new PdfPTable(3);
+                table.setWidthPercentage(100);
+
+                // Add headers
+                table.addCell("Brand");
+                table.addCell("Available Stock");
+                table.addCell("Ordered Quantity");
+
+                // Add data
+                Map<String, Integer> availableStock = getAvailableStockByBrand();
+                Map<String, Integer> orderedStock = getOrderedStockByBrand();
+
+                for (String brand : availableStock.keySet()) {
+                    table.addCell(brand);
+                    table.addCell(String.valueOf(availableStock.get(brand)));
+                    table.addCell(String.valueOf(orderedStock.getOrDefault(brand, 0)));
+                }
+
+                document.add(table);
+                document.close();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "PDF file exported successfully!");
+            }
+        } catch (Exception e) {
+            showAlert(Alert.AlertType.ERROR, "Export Error", "Failed to export PDF file");
+            e.printStackTrace();
+        }
+    }
 
     private void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
@@ -137,8 +252,6 @@ public class GraphController implements Initializable {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
-
 
     public void manage(ActionEvent event) {
         try {
@@ -213,6 +326,9 @@ public class GraphController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to open the Register screen.");
         }
     }
+
+
+
     @FXML
     void graph(ActionEvent event) {
         try {

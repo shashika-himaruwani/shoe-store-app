@@ -4,6 +4,7 @@
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -13,7 +14,7 @@
 
 <AnchorPane prefHeight="693.0" prefWidth="905.0" style="-fx-background-color: #c2c4c3;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lk.sh.shoesstoreapp.controller.GraphController">
    <children>
-      <BarChart fx:id="barChart" layoutX="251.0" layoutY="127.0" prefHeight="510.0" prefWidth="619.0">
+      <BarChart fx:id="barChart" layoutX="267.0" layoutY="182.0" prefHeight="399.0" prefWidth="600.0">
          <xAxis>
             <CategoryAxis side="BOTTOM" fx:id="xAxis" />
          </xAxis>
@@ -21,7 +22,17 @@
             <NumberAxis fx:id="yAxis" side="LEFT" />
          </yAxis>
       </BarChart>
-      <AnchorPane layoutY="-5.0" prefHeight="713.0" prefWidth="222.0" style="-fx-background-color: #383735;">
+      <Label layoutX="396.0" layoutY="29.0" text="Stock Comparison by Brand">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Label>
+      <DatePicker fx:id="startDatePicker" layoutX="573.0" layoutY="111.0" prefHeight="26.0" prefWidth="130.0" />
+      <DatePicker fx:id="endDatePicker" layoutX="727.0" layoutY="111.0" prefHeight="26.0" prefWidth="139.0" />
+      <Button fx:id="btnRefresh" layoutX="517.0" layoutY="111.0" style="-fx-background-color: Green;" text="Refresh" textFill="#f7f7f7" />
+      <Button fx:id="btnExportExcel" layoutX="750.0" layoutY="624.0" style="-fx-background-color: Red;" text="Export to Excel" textFill="WHITE" />
+      <Button fx:id="btnExportPDF" layoutX="634.0" layoutY="624.0" style="-fx-background-color: Red;" text="Export to PDF" textFill="#fffcfc" />
+      <AnchorPane prefHeight="704.0" prefWidth="230.0" style="-fx-background-color: #383735;">
          <children>
             <Button layoutX="38.0" layoutY="251.0" mnemonicParsing="false" onAction="#manage" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: gray;" text="Manage Shoe Items" textFill="#effaef">
                <font>
@@ -59,10 +70,5 @@
             </Button>
          </children>
       </AnchorPane>
-      <Label layoutX="421.0" layoutY="50.0" text="Stock Analysis by Brand">
-         <font>
-            <Font name="System Bold" size="25.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
