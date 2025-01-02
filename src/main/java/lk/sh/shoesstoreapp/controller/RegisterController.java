@@ -96,5 +96,6 @@ public class RegisterController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }
 

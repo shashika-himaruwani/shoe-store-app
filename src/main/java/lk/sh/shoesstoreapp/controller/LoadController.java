@@ -209,7 +209,23 @@ public class LoadController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to open the Register screen.");
         }
     }
+    public void logout(ActionEvent event) {
+        try {
+            // Load the Register screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/lk/sh/shoesstoreapp/login-view.fxml"));
+            Parent root = loader.load();
 
+            // Get the current stage (window) and set the new scene
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("Graph - Shoe Store");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to open the Register screen.");
+        }
+    }
     private void showAlert(AlertType alertType, String navigationError, String s) {
 
     }
